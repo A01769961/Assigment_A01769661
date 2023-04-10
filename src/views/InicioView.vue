@@ -3,13 +3,17 @@ import { ref, onMounted } from 'vue'
 import DatosEstud from '../components/DatosEstud.vue'
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
-import { getAuth} from "firebase/auth";
+import { getAuth, signOut} from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
+import {getStorage ,ref as reffire, getDownloadURL} from "firebase/storage"
+import router from '../router';
+
 
 const nam = ref("")
 const mat = ref("")
 const cori = ref("")
 const corp = ref("")
+const ima = ref("")
 
 const firebaseConfig = {
   apiKey: "AIzaSyCSlWWUBNe9GtN2hPMyRTg953FzgzfSFVI",
@@ -23,6 +27,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const storage = getStorage(app);
 
 
 
@@ -46,7 +51,12 @@ if (docSnap.exists()) {
   // doc.data() will be undefined in this case
   console.log("No such document!");
 }
+
+ima.value = await getDownloadURL(reffire(storage, "alumno.jpeg"))
+
 })
+
+
 </script>
 
 <template>
@@ -62,12 +72,15 @@ if (docSnap.exists()) {
         <RouterLink class="whiteboton pa-4" to="/home">INICIO</RouterLink>
         <RouterLink class="whiteboton pa-4" to="/lista">LISTA DE MATERIAS</RouterLink>
       </div>
+
+      <v-btn class="link"  @click="logout"  icon="mdi-logout"></v-btn>
+      
       </v-app-bar>
 
 
   <h1>INFORMACIÓN DEL ALUMNO</h1>
   <div class="icono rounded_circle">
-    <v-img src="/alumno.jpeg" alt="alumno" cover />
+    <v-img :src="ima" alt="alumno" cover />
   </div>
   <v-container class="contenido pa-8 px-4 mx-auto my-14">
     <v-row>
@@ -93,6 +106,26 @@ if (docSnap.exists()) {
 
 <script>
 
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCSlWWUBNe9GtN2hPMyRTg953FzgzfSFVI",
+  authDomain: "ideen-e749a.firebaseapp.com",
+  projectId: "ideen-e749a",
+  storageBucket: "ideen-e749a.appspot.com",
+  messagingSenderId: "237417789337",
+  appId: "1:237417789337:web:6c530e72be7f86909f4508"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+export default{
+  methods: {
+    async logout () {
+      alert("click")
+      signOut(auth)
+      router.push("/")      
+}}}
 </script>
 <style scoped>
 h1 {
@@ -119,6 +152,11 @@ h1 {
 
 .logo {
   max-width: 10rem;
+}
+
+
+.link {
+  max-width: 2.5rem;
 }
 
 </style>

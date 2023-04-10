@@ -3,7 +3,8 @@ import { ref, onMounted } from 'vue'
 import DatosMat from '../components/DatosMat.vue'
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signOut } from "firebase/auth";
+import router from '../router';
 
 
 
@@ -76,6 +77,9 @@ const querySnapshot = await getDocs(collection(db, "materias"));
         <RouterLink class="whiteboton pa-4" to="/home">INICIO</RouterLink>
         <RouterLink class="whiteboton pa-4" to="/lista">LISTA DE MATERIAS</RouterLink>
       </div>
+
+      <v-btn class="link"  @click="logout"  icon="mdi-logout"></v-btn>
+      
       </v-app-bar>
 
   <h1>MATERIAS INSCRITAS</h1>
@@ -83,6 +87,28 @@ const querySnapshot = await getDocs(collection(db, "materias"));
     <DatosMat v-for="(materia, i) in materias" v-bind="materia" :key="i" />
   </div>
 </template>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCSlWWUBNe9GtN2hPMyRTg953FzgzfSFVI",
+  authDomain: "ideen-e749a.firebaseapp.com",
+  projectId: "ideen-e749a",
+  storageBucket: "ideen-e749a.appspot.com",
+  messagingSenderId: "237417789337",
+  appId: "1:237417789337:web:6c530e72be7f86909f4508"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+export default{
+  methods: {
+    async logout () {
+      alert("click")
+      signOut(auth)
+      router.push("/")      
+}}}
+</script>
 
 <style scoped>
 h1 {
