@@ -45,8 +45,6 @@ if (docSnap.exists()) {
   mat.value =docSnap.data().matricula
   cori.value =docSnap.data().correoinst
   corp.value =docSnap.data().correoper
-
-  console.log("Document data:", docSnap.data());
 } else {
   // doc.data() will be undefined in this case
   console.log("No such document!");
@@ -122,7 +120,6 @@ const auth = getAuth(app);
 export default{
   methods: {
     async logout () {
-      alert("click")
       signOut(auth)
       router.push("/")      
 }}}

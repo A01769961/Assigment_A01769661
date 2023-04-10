@@ -56,7 +56,6 @@ onMounted(async () =>{
 const querySnapshot = await getDocs(collection(db, "materias"));
   const dbt =[]
   querySnapshot.forEach((doc) => {
-    console.log(`${doc.id} => ${doc.data()}`);
     dbt.push(doc.data())
 });
   materias.value=dbt;
@@ -104,7 +103,6 @@ const auth = getAuth(app);
 export default{
   methods: {
     async logout () {
-      alert("click")
       signOut(auth)
       router.push("/")      
 }}}
